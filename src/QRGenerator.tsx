@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { auth } from "./firebase";
+import CryptoJS from "crypto-js";
 import ocbcimg from "./assets/OCBC-Logo.png";
 
 interface UserData {
@@ -14,8 +15,14 @@ interface LocationState {
   user: UserData;
 }
 
+// Define a secret key for generating tokens
+const SECRET_KEY = import.meta.env.VITE_SECRET_KEY;
+
+console.log(SECRET_KEY);
+
+// Generate a secure token with userID and timestamp using crypto-js
 const generateToken = (userID: string, timestamp: number) => {
-  return btoa(`${userID}:${timestamp}`); // Base64 encoding of userID and timestamp
+  return CryptoJS.HmacSHA256(`${userID}:${timestamp}`, SECRET_KEY).toString(CryptoJS.enc.Hex);
 };
 
 const QRGenerator: React.FC = () => {
@@ -25,31 +32,32 @@ const QRGenerator: React.FC = () => {
   const user = state?.user;
 
   const [qrData, setQrData] = useState<string>("");
-  const [progress, setProgress] = useState<number>(0);
+  const [progress, setProgress] = useState<number>(100); // Start progress at 100
 
   useEffect(() => {
     const updateQRCode = () => {
       const timestamp = Math.floor(Date.now() / 10000); // Get current time in 10-second intervals
-      const token = generateToken(user.uid, timestamp);
+      const token = generateToken(user.uid, timestamp); // Generate a hashed token
 
       const data = JSON.stringify({
         userID: user.uid,
         email: user.email,
         displayName: user.displayName,
-        token,
+        timestamp,
+        token, // Include the hashed token
       });
       setQrData(data);
-      setProgress(0); // Reset progress
+      setProgress(100); // Reset progress to 100%
     };
 
-    updateQRCode(); // Initial QR code
-    const interval = setInterval(updateQRCode, 10000); // Update every 10 seconds
+    updateQRCode(); // Generate the initial QR code
+    const interval = setInterval(updateQRCode, 10000); // Update the QR code every 10 seconds
 
     return () => clearInterval(interval);
   }, [user]);
 
   useEffect(() => {
-    // Update the progress bar every 100ms
+    // Update the progress bar every 100ms to make it decrease over time
     const progressInterval = setInterval(() => {
       setProgress((prev) => (prev > 0 ? prev - 1 : 100));
     }, 100);
