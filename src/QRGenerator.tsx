@@ -18,8 +18,6 @@ interface LocationState {
 // Define a secret key for generating tokens
 const SECRET_KEY = import.meta.env.VITE_SECRET_KEY;
 
-console.log(SECRET_KEY);
-
 // Generate a secure token with userID and timestamp using crypto-js
 const generateToken = (userID: string, timestamp: number) => {
   return CryptoJS.HmacSHA256(`${userID}:${timestamp}`, SECRET_KEY).toString(CryptoJS.enc.Hex);
