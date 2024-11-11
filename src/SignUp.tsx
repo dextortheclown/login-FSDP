@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "./firebase";
+import { auth, db } from "./firebase";
+import { doc, setDoc } from "firebase/firestore";
 import { useNavigate, NavLink } from "react-router-dom";
 import ocbcimg from "./assets/OCBC-Logo.png";
 
@@ -15,8 +16,17 @@ const SignUp: React.FC = () => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
+
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Add the new user to Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        userID: user.uid,
+        email: user.email,
+      });
+
       setSuccess("Account created successfully!");
       setTimeout(() => navigate("/"), 2000); // Redirect to login after a short delay
     } catch (err) {
@@ -28,8 +38,8 @@ const SignUp: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-8 space-y-4 bg-white shadow-md rounded-lg">
-      <header className="w-full p-4 flex flex-col items-center">
-        <img src={ocbcimg} alt="Bank Logo" className="h-16 mb-2" />
+        <header className="w-full p-4 flex flex-col items-center">
+          <img src={ocbcimg} alt="Bank Logo" className="h-16 mb-2" />
         </header>
 
         <form onSubmit={handleSignUp} className="space-y-6">
