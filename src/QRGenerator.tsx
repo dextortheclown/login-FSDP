@@ -36,15 +36,7 @@ const QRGenerator: React.FC = () => {
     const updateQRCode = () => {
       const timestamp = Math.floor(Date.now() / 10000); // Get current time in 10-second intervals
       const token = generateToken(user.uid, timestamp); // Generate a hashed token
-
-      const data = JSON.stringify({
-        userID: user.uid,
-        email: user.email,
-        displayName: user.displayName,
-        timestamp,
-        token, // Include the hashed token
-      });
-      setQrData(data);
+      setQrData(token);
       setProgress(100); // Reset progress to 100%
     };
 
