@@ -4,6 +4,14 @@ import { auth, db } from "./firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate, NavLink } from "react-router-dom";
 import ocbcimg from "./assets/OCBC-Logo.png";
+// preferences
+const defaultPreferences = {
+  theme: "light", 
+  font: "Inter", 
+  fontWeight: "normal", 
+  iconSize: "medium", 
+  textToSpeech: false,
+};
 
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -20,12 +28,24 @@ const SignUp: React.FC = () => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
+      
 
       // Add the new user to Firestore
       await setDoc(doc(db, "users", user.uid), {
         userID: user.uid,
         email: user.email,
       });
+
+      // set default preferences in new account 
+      await setDoc(doc(db, "preferences", user.uid), {
+        userID: user.uid,
+        theme: "light",
+        font: "Inter",
+        fontWeight: "normal",
+        iconSize: "medium",
+        textToSpeech: false,
+      });
+
 
       setSuccess("Account created successfully!");
       setTimeout(() => navigate("/"), 2000); // Redirect to login after a short delay
