@@ -12,9 +12,8 @@ This Bank App Mockup allows users to securely log in using a QR code generated b
 ## Project Structure
 
 - `QRGenerator.tsx`: Generates a QR code with a secure token. This component handles the generation and display of the QR code along with a progress bar indicating the validity period.
-- `QRScanner.tsx`: Scans the QR code to authenticate the user. It decodes the token and verifies it with Firestore to confirm the user’s identity.
 - `firebaseConfig.ts`: Configures Firebase to use Firestore for storing user data.
-- `SignUp.tsx` and `SignIn.tsx`: Handles user sign-up and login, storing essential information in Firestore for authentication purposes.
+- `SignUp.tsx` and `Login.tsx`: Handles user sign-up and login, storing essential information in Firestore for authentication purposes.
 
 ## Technologies Used
 
