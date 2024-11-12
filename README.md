@@ -40,7 +40,7 @@ This Bank App Mockup allows users to securely log in using a QR code generated b
 2. **Creation of Firebase and env file**:
    - Go to the Firebase Console, create a project, and enable Firestore and Email/Password Authentication.
    - Copy your Firebase app configuration details from the Firebase Console and create a .env file in the project root:
-   - 
+   
    VITE_FIREBASE_API_KEY=your_api_key
    VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
    VITE_FIREBASE_PROJECT_ID=your_project_id
