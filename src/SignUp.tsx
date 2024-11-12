@@ -4,14 +4,6 @@ import { auth, db } from "./firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate, NavLink } from "react-router-dom";
 import ocbcimg from "./assets/OCBC-Logo.png";
-// preferences
-const defaultPreferences = {
-  theme: "light", 
-  font: "Inter", 
-  fontWeight: "normal", 
-  iconSize: "medium", 
-  textToSpeech: false,
-};
 
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState<string>("");
