@@ -20,15 +20,14 @@ const SignUp: React.FC = () => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      
 
-      // Add the new user to Firestore
+      // Create 'users' document
       await setDoc(doc(db, "users", user.uid), {
         userID: user.uid,
         email: user.email,
       });
 
-      // set default preferences in new account 
+      // Create 'preferences' collection
       await setDoc(doc(db, "preferences", user.uid), {
         userID: user.uid,
         theme: "light",
@@ -38,6 +37,12 @@ const SignUp: React.FC = () => {
         textToSpeech: false,
       });
 
+      // Create 'investments' collection
+      await setDoc(doc(db, "investments", user.uid), {
+        userID: user.uid,
+        investmentStatus: false,
+        investments: [],
+      });
 
       setSuccess("Account created successfully!");
       setTimeout(() => navigate("/"), 2000); // Redirect to login after a short delay
