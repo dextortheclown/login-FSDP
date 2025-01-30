@@ -60,11 +60,28 @@ const QRGenerator: React.FC = () => {
     navigate("/"); // Redirect to the login page after logout
   };
 
+  const handleEnrollFaceID = () => {
+    navigate("/faceIDRegistration", { state: { user } }); // Navigate to FaceIDRegistration
+  };
+
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100">
       <header className="w-full p-4 flex justify-between items-center">
         <img src={ocbcimg} alt="Bank Logo" className="h-16" />
-        <button onClick={handleLogout} className="text-sm font-medium text-gray-500">Log Out</button>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={handleEnrollFaceID}
+            className="text-sm font-medium text-blue-500 hover:underline"
+          >
+            Enroll Face ID
+          </button>
+          <button
+            onClick={handleLogout}
+            className="text-sm font-medium text-gray-500 hover:underline"
+          >
+            Log Out
+          </button>
+        </div>
       </header>
 
       <div className="text-center mt-4">

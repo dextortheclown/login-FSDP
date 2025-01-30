@@ -25,6 +25,7 @@ const SignUp: React.FC = () => {
       await setDoc(doc(db, "users", user.uid), {
         userID: user.uid,
         email: user.email,
+        faceID: null,
       });
 
       // Create 'preferences' collection
@@ -50,6 +51,7 @@ const SignUp: React.FC = () => {
       setError("Failed to create account. Please try again.");
       console.error("Signup error:", err);
     }
+
   };
 
   return (
