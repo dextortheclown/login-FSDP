@@ -135,14 +135,26 @@ const FaceIDRegistration: React.FC = () => {
   
   
 
+  const handleQRgenerator = () => {
+    navigate("/qr-generator", { state: { user } });
+  };
+
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100">
       {/* Header */}
       <header className="w-full p-4 flex justify-between items-center">
         <img src={ocbcimg} alt="Bank Logo" className="h-16" />
+        <div className="flex items-center gap-4">
+        <button
+            onClick={handleQRgenerator}
+            className="text-sm font-medium text-blue-500 hover:underline"
+          >
+            QR Code Generator
+          </button>
         <button onClick={() => auth.signOut().then(() => navigate("/"))} className="text-sm font-medium text-gray-500">
           Log Out
         </button>
+        </div>
       </header>
 
       {/* Page Title */}
